@@ -1,11 +1,12 @@
 from http import HTTPStatus
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
+from ...models.lite_llm_spend_logs import LiteLLMSpendLogs
 from ...types import UNSET, Response, Unset
 
 
@@ -67,7 +68,16 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[HTTPValidationError]:
+) -> Optional[Union[HTTPValidationError, List["LiteLLMSpendLogs"]]]:
+    if response.status_code == HTTPStatus.OK:
+        response_200 = []
+        _response_200 = response.json()
+        for response_200_item_data in _response_200:
+            response_200_item = LiteLLMSpendLogs.from_dict(response_200_item_data)
+
+            response_200.append(response_200_item)
+
+        return response_200
     if response.status_code == HTTPStatus.UNPROCESSABLE_ENTITY:
         response_422 = HTTPValidationError.from_dict(response.json())
 
@@ -80,7 +90,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[HTTPValidationError]:
+) -> Response[Union[HTTPValidationError, List["LiteLLMSpendLogs"]]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -97,7 +107,7 @@ def sync_detailed(
     request_id: Union[None, Unset, str] = UNSET,
     start_date: Union[None, Unset, str] = UNSET,
     end_date: Union[None, Unset, str] = UNSET,
-) -> Response[HTTPValidationError]:
+) -> Response[Union[HTTPValidationError, List["LiteLLMSpendLogs"]]]:
     r"""View Spend Logs
 
      View all spend logs, if request_id is provided, only logs for that request_id will be returned
@@ -139,7 +149,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError]
+        Response[Union[HTTPValidationError, List['LiteLLMSpendLogs']]]
     """
 
     kwargs = _get_kwargs(
@@ -165,7 +175,7 @@ def sync(
     request_id: Union[None, Unset, str] = UNSET,
     start_date: Union[None, Unset, str] = UNSET,
     end_date: Union[None, Unset, str] = UNSET,
-) -> Optional[HTTPValidationError]:
+) -> Optional[Union[HTTPValidationError, List["LiteLLMSpendLogs"]]]:
     r"""View Spend Logs
 
      View all spend logs, if request_id is provided, only logs for that request_id will be returned
@@ -207,7 +217,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError
+        Union[HTTPValidationError, List['LiteLLMSpendLogs']]
     """
 
     return sync_detailed(
@@ -228,7 +238,7 @@ async def asyncio_detailed(
     request_id: Union[None, Unset, str] = UNSET,
     start_date: Union[None, Unset, str] = UNSET,
     end_date: Union[None, Unset, str] = UNSET,
-) -> Response[HTTPValidationError]:
+) -> Response[Union[HTTPValidationError, List["LiteLLMSpendLogs"]]]:
     r"""View Spend Logs
 
      View all spend logs, if request_id is provided, only logs for that request_id will be returned
@@ -270,7 +280,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[HTTPValidationError]
+        Response[Union[HTTPValidationError, List['LiteLLMSpendLogs']]]
     """
 
     kwargs = _get_kwargs(
@@ -294,7 +304,7 @@ async def asyncio(
     request_id: Union[None, Unset, str] = UNSET,
     start_date: Union[None, Unset, str] = UNSET,
     end_date: Union[None, Unset, str] = UNSET,
-) -> Optional[HTTPValidationError]:
+) -> Optional[Union[HTTPValidationError, List["LiteLLMSpendLogs"]]]:
     r"""View Spend Logs
 
      View all spend logs, if request_id is provided, only logs for that request_id will be returned
@@ -336,7 +346,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        HTTPValidationError
+        Union[HTTPValidationError, List['LiteLLMSpendLogs']]
     """
 
     return (

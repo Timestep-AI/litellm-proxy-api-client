@@ -10,8 +10,8 @@ from ...types import Response
 
 def _get_kwargs() -> Dict[str, Any]:
     _kwargs: Dict[str, Any] = {
-        "method": "get",
-        "url": "/ollama_logs",
+        "method": "options",
+        "url": "/health/liveliness",
     }
 
     return _kwargs
@@ -39,7 +39,9 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Any]:
-    """Retrieve Server Log
+    """Health Liveliness Options
+
+     Options endpoint for health/liveliness check.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -62,7 +64,9 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Any]:
-    """Retrieve Server Log
+    """Health Liveliness Options
+
+     Options endpoint for health/liveliness check.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

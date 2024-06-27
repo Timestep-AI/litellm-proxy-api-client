@@ -3,51 +3,28 @@ from typing import Any, Dict, List, Type, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="InvitationUpdate")
+T = TypeVar("T", bound="SpendCalculateRequestCompletionResponseType0")
 
 
 @_attrs_define
-class InvitationUpdate:
-    """
-    Attributes:
-        invitation_id (str):
-        is_accepted (bool):
-    """
+class SpendCalculateRequestCompletionResponseType0:
+    """ """
 
-    invitation_id: str
-    is_accepted: bool
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        invitation_id = self.invitation_id
-
-        is_accepted = self.is_accepted
-
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update(
-            {
-                "invitation_id": invitation_id,
-                "is_accepted": is_accepted,
-            }
-        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
         d = src_dict.copy()
-        invitation_id = d.pop("invitation_id")
+        spend_calculate_request_completion_response_type_0 = cls()
 
-        is_accepted = d.pop("is_accepted")
-
-        invitation_update = cls(
-            invitation_id=invitation_id,
-            is_accepted=is_accepted,
-        )
-
-        invitation_update.additional_properties = d
-        return invitation_update
+        spend_calculate_request_completion_response_type_0.additional_properties = d
+        return spend_calculate_request_completion_response_type_0
 
     @property
     def additional_keys(self) -> List[str]:

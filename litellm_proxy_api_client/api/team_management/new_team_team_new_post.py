@@ -8,14 +8,17 @@ from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.lite_llm_team_table import LiteLLMTeamTable
 from ...models.new_team_request import NewTeamRequest
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     body: NewTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
+    if not isinstance(litellm_changed_by, Unset):
+        headers["litellm-changed-by"] = litellm_changed_by
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
@@ -63,12 +66,14 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: NewTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Response[Union[HTTPValidationError, LiteLLMTeamTable]]:
     r"""New Team
 
      Allow users to create a new team. Apply user permissions to their team.
 
-    [ASK FOR HELP](https://github.com/BerriAI/litellm/issues)
+    👉 [Detailed Doc on setting team budgets](https://docs.litellm.ai/docs/proxy/team_budgets)
+
 
     Parameters:
     - team_alias: Optional[str] - User defined team alias
@@ -76,13 +81,15 @@ def sync_detailed(
     - members_with_roles: List[{\"role\": \"admin\" or \"user\", \"user_id\": \"<user-id>\"}] - A list
     of users and their roles in the team. Get user_id when making a new user via `/user/new`.
     - metadata: Optional[dict] - Metadata for team, store information for team. Example metadata =
-    {\"team\": \"core-infra\", \"app\": \"app2\", \"email\": \"ishaan@berri.ai\" }
+    {\"extra_info\": \"some info\"}
     - tpm_limit: Optional[int] - The TPM (Tokens Per Minute) limit for this team - all keys with this
     team_id will have at max this TPM limit
     - rpm_limit: Optional[int] - The RPM (Requests Per Minute) limit for this team - all keys associated
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -108,7 +115,22 @@ def sync_detailed(
 
     ```
 
+     ```
+    curl --location 'http://0.0.0.0:4000/team/new'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data '{
+                \"team_alias\": \"QA Prod Bot\",
+                \"max_budget\": 0.000000001,
+                \"budget_duration\": \"1d\"
+            }'
+
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (NewTeamRequest):
 
     Raises:
@@ -121,6 +143,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        litellm_changed_by=litellm_changed_by,
     )
 
     response = client.get_httpx_client().request(
@@ -134,12 +157,14 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: NewTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Optional[Union[HTTPValidationError, LiteLLMTeamTable]]:
     r"""New Team
 
      Allow users to create a new team. Apply user permissions to their team.
 
-    [ASK FOR HELP](https://github.com/BerriAI/litellm/issues)
+    👉 [Detailed Doc on setting team budgets](https://docs.litellm.ai/docs/proxy/team_budgets)
+
 
     Parameters:
     - team_alias: Optional[str] - User defined team alias
@@ -147,13 +172,15 @@ def sync(
     - members_with_roles: List[{\"role\": \"admin\" or \"user\", \"user_id\": \"<user-id>\"}] - A list
     of users and their roles in the team. Get user_id when making a new user via `/user/new`.
     - metadata: Optional[dict] - Metadata for team, store information for team. Example metadata =
-    {\"team\": \"core-infra\", \"app\": \"app2\", \"email\": \"ishaan@berri.ai\" }
+    {\"extra_info\": \"some info\"}
     - tpm_limit: Optional[int] - The TPM (Tokens Per Minute) limit for this team - all keys with this
     team_id will have at max this TPM limit
     - rpm_limit: Optional[int] - The RPM (Requests Per Minute) limit for this team - all keys associated
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -179,7 +206,22 @@ def sync(
 
     ```
 
+     ```
+    curl --location 'http://0.0.0.0:4000/team/new'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data '{
+                \"team_alias\": \"QA Prod Bot\",
+                \"max_budget\": 0.000000001,
+                \"budget_duration\": \"1d\"
+            }'
+
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (NewTeamRequest):
 
     Raises:
@@ -193,6 +235,7 @@ def sync(
     return sync_detailed(
         client=client,
         body=body,
+        litellm_changed_by=litellm_changed_by,
     ).parsed
 
 
@@ -200,12 +243,14 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: NewTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Response[Union[HTTPValidationError, LiteLLMTeamTable]]:
     r"""New Team
 
      Allow users to create a new team. Apply user permissions to their team.
 
-    [ASK FOR HELP](https://github.com/BerriAI/litellm/issues)
+    👉 [Detailed Doc on setting team budgets](https://docs.litellm.ai/docs/proxy/team_budgets)
+
 
     Parameters:
     - team_alias: Optional[str] - User defined team alias
@@ -213,13 +258,15 @@ async def asyncio_detailed(
     - members_with_roles: List[{\"role\": \"admin\" or \"user\", \"user_id\": \"<user-id>\"}] - A list
     of users and their roles in the team. Get user_id when making a new user via `/user/new`.
     - metadata: Optional[dict] - Metadata for team, store information for team. Example metadata =
-    {\"team\": \"core-infra\", \"app\": \"app2\", \"email\": \"ishaan@berri.ai\" }
+    {\"extra_info\": \"some info\"}
     - tpm_limit: Optional[int] - The TPM (Tokens Per Minute) limit for this team - all keys with this
     team_id will have at max this TPM limit
     - rpm_limit: Optional[int] - The RPM (Requests Per Minute) limit for this team - all keys associated
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -245,7 +292,22 @@ async def asyncio_detailed(
 
     ```
 
+     ```
+    curl --location 'http://0.0.0.0:4000/team/new'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data '{
+                \"team_alias\": \"QA Prod Bot\",
+                \"max_budget\": 0.000000001,
+                \"budget_duration\": \"1d\"
+            }'
+
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (NewTeamRequest):
 
     Raises:
@@ -258,6 +320,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        litellm_changed_by=litellm_changed_by,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -269,12 +332,14 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: NewTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Optional[Union[HTTPValidationError, LiteLLMTeamTable]]:
     r"""New Team
 
      Allow users to create a new team. Apply user permissions to their team.
 
-    [ASK FOR HELP](https://github.com/BerriAI/litellm/issues)
+    👉 [Detailed Doc on setting team budgets](https://docs.litellm.ai/docs/proxy/team_budgets)
+
 
     Parameters:
     - team_alias: Optional[str] - User defined team alias
@@ -282,13 +347,15 @@ async def asyncio(
     - members_with_roles: List[{\"role\": \"admin\" or \"user\", \"user_id\": \"<user-id>\"}] - A list
     of users and their roles in the team. Get user_id when making a new user via `/user/new`.
     - metadata: Optional[dict] - Metadata for team, store information for team. Example metadata =
-    {\"team\": \"core-infra\", \"app\": \"app2\", \"email\": \"ishaan@berri.ai\" }
+    {\"extra_info\": \"some info\"}
     - tpm_limit: Optional[int] - The TPM (Tokens Per Minute) limit for this team - all keys with this
     team_id will have at max this TPM limit
     - rpm_limit: Optional[int] - The RPM (Requests Per Minute) limit for this team - all keys associated
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -314,7 +381,22 @@ async def asyncio(
 
     ```
 
+     ```
+    curl --location 'http://0.0.0.0:4000/team/new'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data '{
+                \"team_alias\": \"QA Prod Bot\",
+                \"max_budget\": 0.000000001,
+                \"budget_duration\": \"1d\"
+            }'
+
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (NewTeamRequest):
 
     Raises:
@@ -329,5 +411,6 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             body=body,
+            litellm_changed_by=litellm_changed_by,
         )
     ).parsed

@@ -10,8 +10,8 @@ from ...types import Response
 
 def _get_kwargs() -> Dict[str, Any]:
     _kwargs: Dict[str, Any] = {
-        "method": "get",
-        "url": "/sso/callback",
+        "method": "options",
+        "url": "/health/readiness",
     }
 
     return _kwargs
@@ -37,11 +37,11 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 
 def sync_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[Any]:
-    """Auth Callback
+    """Health Readiness Options
 
-     Verify login
+     Options endpoint for health/readiness check.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -62,11 +62,11 @@ def sync_detailed(
 
 async def asyncio_detailed(
     *,
-    client: Union[AuthenticatedClient, Client],
+    client: AuthenticatedClient,
 ) -> Response[Any]:
-    """Auth Callback
+    """Health Readiness Options
 
-     Verify login
+     Options endpoint for health/readiness check.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

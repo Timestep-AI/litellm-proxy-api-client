@@ -1,10 +1,10 @@
+import datetime
 from typing import Any, Dict, List, Type, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+from dateutil.parser import isoparse
 
-from ..models.model_info_base_model_type_0 import ModelInfoBaseModelType0
-from ..models.model_info_mode_type_0 import ModelInfoModeType0
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ModelInfo")
@@ -15,70 +15,82 @@ class ModelInfo:
     """
     Attributes:
         id (Union[None, str]):
-        mode (Union[ModelInfoModeType0, None]):
-        base_model (Union[ModelInfoBaseModelType0, None]):
-        input_cost_per_token (Union[None, Unset, float]):  Default: 0.0.
-        output_cost_per_token (Union[None, Unset, float]):  Default: 0.0.
-        max_tokens (Union[None, Unset, int]):  Default: 2048.
+        db_model (Union[Unset, bool]):  Default: False.
+        updated_at (Union[None, Unset, datetime.datetime]):
+        updated_by (Union[None, Unset, str]):
+        created_at (Union[None, Unset, datetime.datetime]):
+        created_by (Union[None, Unset, str]):
+        base_model (Union[None, Unset, str]):
     """
 
     id: Union[None, str]
-    mode: Union[ModelInfoModeType0, None]
-    base_model: Union[ModelInfoBaseModelType0, None]
-    input_cost_per_token: Union[None, Unset, float] = 0.0
-    output_cost_per_token: Union[None, Unset, float] = 0.0
-    max_tokens: Union[None, Unset, int] = 2048
+    db_model: Union[Unset, bool] = False
+    updated_at: Union[None, Unset, datetime.datetime] = UNSET
+    updated_by: Union[None, Unset, str] = UNSET
+    created_at: Union[None, Unset, datetime.datetime] = UNSET
+    created_by: Union[None, Unset, str] = UNSET
+    base_model: Union[None, Unset, str] = UNSET
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         id: Union[None, str]
         id = self.id
 
-        mode: Union[None, str]
-        if isinstance(self.mode, ModelInfoModeType0):
-            mode = self.mode.value
-        else:
-            mode = self.mode
+        db_model = self.db_model
 
-        base_model: Union[None, str]
-        if isinstance(self.base_model, ModelInfoBaseModelType0):
-            base_model = self.base_model.value
+        updated_at: Union[None, Unset, str]
+        if isinstance(self.updated_at, Unset):
+            updated_at = UNSET
+        elif isinstance(self.updated_at, datetime.datetime):
+            updated_at = self.updated_at.isoformat()
+        else:
+            updated_at = self.updated_at
+
+        updated_by: Union[None, Unset, str]
+        if isinstance(self.updated_by, Unset):
+            updated_by = UNSET
+        else:
+            updated_by = self.updated_by
+
+        created_at: Union[None, Unset, str]
+        if isinstance(self.created_at, Unset):
+            created_at = UNSET
+        elif isinstance(self.created_at, datetime.datetime):
+            created_at = self.created_at.isoformat()
+        else:
+            created_at = self.created_at
+
+        created_by: Union[None, Unset, str]
+        if isinstance(self.created_by, Unset):
+            created_by = UNSET
+        else:
+            created_by = self.created_by
+
+        base_model: Union[None, Unset, str]
+        if isinstance(self.base_model, Unset):
+            base_model = UNSET
         else:
             base_model = self.base_model
-
-        input_cost_per_token: Union[None, Unset, float]
-        if isinstance(self.input_cost_per_token, Unset):
-            input_cost_per_token = UNSET
-        else:
-            input_cost_per_token = self.input_cost_per_token
-
-        output_cost_per_token: Union[None, Unset, float]
-        if isinstance(self.output_cost_per_token, Unset):
-            output_cost_per_token = UNSET
-        else:
-            output_cost_per_token = self.output_cost_per_token
-
-        max_tokens: Union[None, Unset, int]
-        if isinstance(self.max_tokens, Unset):
-            max_tokens = UNSET
-        else:
-            max_tokens = self.max_tokens
 
         field_dict: Dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "id": id,
-                "mode": mode,
-                "base_model": base_model,
             }
         )
-        if input_cost_per_token is not UNSET:
-            field_dict["input_cost_per_token"] = input_cost_per_token
-        if output_cost_per_token is not UNSET:
-            field_dict["output_cost_per_token"] = output_cost_per_token
-        if max_tokens is not UNSET:
-            field_dict["max_tokens"] = max_tokens
+        if db_model is not UNSET:
+            field_dict["db_model"] = db_model
+        if updated_at is not UNSET:
+            field_dict["updated_at"] = updated_at
+        if updated_by is not UNSET:
+            field_dict["updated_by"] = updated_by
+        if created_at is not UNSET:
+            field_dict["created_at"] = created_at
+        if created_by is not UNSET:
+            field_dict["created_by"] = created_by
+        if base_model is not UNSET:
+            field_dict["base_model"] = base_model
 
         return field_dict
 
@@ -93,70 +105,77 @@ class ModelInfo:
 
         id = _parse_id(d.pop("id"))
 
-        def _parse_mode(data: object) -> Union[ModelInfoModeType0, None]:
+        db_model = d.pop("db_model", UNSET)
+
+        def _parse_updated_at(data: object) -> Union[None, Unset, datetime.datetime]:
             if data is None:
+                return data
+            if isinstance(data, Unset):
                 return data
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                mode_type_0 = ModelInfoModeType0(data)
+                updated_at_type_0 = isoparse(data)
 
-                return mode_type_0
+                return updated_at_type_0
             except:  # noqa: E722
                 pass
-            return cast(Union[ModelInfoModeType0, None], data)
+            return cast(Union[None, Unset, datetime.datetime], data)
 
-        mode = _parse_mode(d.pop("mode"))
+        updated_at = _parse_updated_at(d.pop("updated_at", UNSET))
 
-        def _parse_base_model(data: object) -> Union[ModelInfoBaseModelType0, None]:
+        def _parse_updated_by(data: object) -> Union[None, Unset, str]:
             if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(Union[None, Unset, str], data)
+
+        updated_by = _parse_updated_by(d.pop("updated_by", UNSET))
+
+        def _parse_created_at(data: object) -> Union[None, Unset, datetime.datetime]:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
                 return data
             try:
                 if not isinstance(data, str):
                     raise TypeError()
-                base_model_type_0 = ModelInfoBaseModelType0(data)
+                created_at_type_0 = isoparse(data)
 
-                return base_model_type_0
+                return created_at_type_0
             except:  # noqa: E722
                 pass
-            return cast(Union[ModelInfoBaseModelType0, None], data)
+            return cast(Union[None, Unset, datetime.datetime], data)
 
-        base_model = _parse_base_model(d.pop("base_model"))
+        created_at = _parse_created_at(d.pop("created_at", UNSET))
 
-        def _parse_input_cost_per_token(data: object) -> Union[None, Unset, float]:
+        def _parse_created_by(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, float], data)
+            return cast(Union[None, Unset, str], data)
 
-        input_cost_per_token = _parse_input_cost_per_token(d.pop("input_cost_per_token", UNSET))
+        created_by = _parse_created_by(d.pop("created_by", UNSET))
 
-        def _parse_output_cost_per_token(data: object) -> Union[None, Unset, float]:
+        def _parse_base_model(data: object) -> Union[None, Unset, str]:
             if data is None:
                 return data
             if isinstance(data, Unset):
                 return data
-            return cast(Union[None, Unset, float], data)
+            return cast(Union[None, Unset, str], data)
 
-        output_cost_per_token = _parse_output_cost_per_token(d.pop("output_cost_per_token", UNSET))
-
-        def _parse_max_tokens(data: object) -> Union[None, Unset, int]:
-            if data is None:
-                return data
-            if isinstance(data, Unset):
-                return data
-            return cast(Union[None, Unset, int], data)
-
-        max_tokens = _parse_max_tokens(d.pop("max_tokens", UNSET))
+        base_model = _parse_base_model(d.pop("base_model", UNSET))
 
         model_info = cls(
             id=id,
-            mode=mode,
+            db_model=db_model,
+            updated_at=updated_at,
+            updated_by=updated_by,
+            created_at=created_at,
+            created_by=created_by,
             base_model=base_model,
-            input_cost_per_token=input_cost_per_token,
-            output_cost_per_token=output_cost_per_token,
-            max_tokens=max_tokens,
         )
 
         model_info.additional_properties = d

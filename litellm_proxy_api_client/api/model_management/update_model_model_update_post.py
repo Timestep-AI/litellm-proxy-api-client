@@ -5,20 +5,20 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.config_field_update import ConfigFieldUpdate
 from ...models.http_validation_error import HTTPValidationError
+from ...models.update_deployment import UpdateDeployment
 from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ConfigFieldUpdate,
+    body: UpdateDeployment,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": "/config/field/update",
+        "url": "/model/update",
     }
 
     _body = body.to_dict()
@@ -60,14 +60,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldUpdate,
+    body: UpdateDeployment,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Update Config General Settings
+    """Update Model
 
-     Update a specific field in litellm general settings
+     Edit existing model params
 
     Args:
-        body (ConfigFieldUpdate):
+        body (UpdateDeployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -91,14 +91,14 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldUpdate,
+    body: UpdateDeployment,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Update Config General Settings
+    """Update Model
 
-     Update a specific field in litellm general settings
+     Edit existing model params
 
     Args:
-        body (ConfigFieldUpdate):
+        body (UpdateDeployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -117,14 +117,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldUpdate,
+    body: UpdateDeployment,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Update Config General Settings
+    """Update Model
 
-     Update a specific field in litellm general settings
+     Edit existing model params
 
     Args:
-        body (ConfigFieldUpdate):
+        body (UpdateDeployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -146,14 +146,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldUpdate,
+    body: UpdateDeployment,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Update Config General Settings
+    """Update Model
 
-     Update a specific field in litellm general settings
+     Edit existing model params
 
     Args:
-        body (ConfigFieldUpdate):
+        body (UpdateDeployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

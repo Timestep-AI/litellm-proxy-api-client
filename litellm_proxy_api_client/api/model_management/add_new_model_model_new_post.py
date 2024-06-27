@@ -5,20 +5,20 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.config_field_delete import ConfigFieldDelete
+from ...models.deployment import Deployment
 from ...models.http_validation_error import HTTPValidationError
 from ...types import Response
 
 
 def _get_kwargs(
     *,
-    body: ConfigFieldDelete,
+    body: Deployment,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
-        "url": "/config/field/delete",
+        "url": "/model/new",
     }
 
     _body = body.to_dict()
@@ -60,15 +60,14 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldDelete,
+    body: Deployment,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Delete Config General Settings
+    """Add New Model
 
-     Delete the db value of this field in litellm general settings. Resets it to it's initial default
-    value on litellm.
+     Allows adding new models to the model list in the config.yaml
 
     Args:
-        body (ConfigFieldDelete):
+        body (Deployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -92,15 +91,14 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldDelete,
+    body: Deployment,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Delete Config General Settings
+    """Add New Model
 
-     Delete the db value of this field in litellm general settings. Resets it to it's initial default
-    value on litellm.
+     Allows adding new models to the model list in the config.yaml
 
     Args:
-        body (ConfigFieldDelete):
+        body (Deployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -119,15 +117,14 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldDelete,
+    body: Deployment,
 ) -> Response[Union[Any, HTTPValidationError]]:
-    """Delete Config General Settings
+    """Add New Model
 
-     Delete the db value of this field in litellm general settings. Resets it to it's initial default
-    value on litellm.
+     Allows adding new models to the model list in the config.yaml
 
     Args:
-        body (ConfigFieldDelete):
+        body (Deployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -149,15 +146,14 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: ConfigFieldDelete,
+    body: Deployment,
 ) -> Optional[Union[Any, HTTPValidationError]]:
-    """Delete Config General Settings
+    """Add New Model
 
-     Delete the db value of this field in litellm general settings. Resets it to it's initial default
-    value on litellm.
+     Allows adding new models to the model list in the config.yaml
 
     Args:
-        body (ConfigFieldDelete):
+        body (Deployment):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

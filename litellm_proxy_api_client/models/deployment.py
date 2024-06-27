@@ -4,24 +4,24 @@ from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 if TYPE_CHECKING:
+    from ..models.lite_llm_params import LiteLLMParams
     from ..models.model_info import ModelInfo
-    from ..models.model_params_litellm_params import ModelParamsLitellmParams
 
 
-T = TypeVar("T", bound="ModelParams")
+T = TypeVar("T", bound="Deployment")
 
 
 @_attrs_define
-class ModelParams:
+class Deployment:
     """
     Attributes:
         model_name (str):
-        litellm_params (ModelParamsLitellmParams):
+        litellm_params (LiteLLMParams): LiteLLM Params with 'model' requirement - used for completions
         model_info (ModelInfo):
     """
 
     model_name: str
-    litellm_params: "ModelParamsLitellmParams"
+    litellm_params: "LiteLLMParams"
     model_info: "ModelInfo"
     additional_properties: Dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -46,24 +46,24 @@ class ModelParams:
 
     @classmethod
     def from_dict(cls: Type[T], src_dict: Dict[str, Any]) -> T:
+        from ..models.lite_llm_params import LiteLLMParams
         from ..models.model_info import ModelInfo
-        from ..models.model_params_litellm_params import ModelParamsLitellmParams
 
         d = src_dict.copy()
         model_name = d.pop("model_name")
 
-        litellm_params = ModelParamsLitellmParams.from_dict(d.pop("litellm_params"))
+        litellm_params = LiteLLMParams.from_dict(d.pop("litellm_params"))
 
         model_info = ModelInfo.from_dict(d.pop("model_info"))
 
-        model_params = cls(
+        deployment = cls(
             model_name=model_name,
             litellm_params=litellm_params,
             model_info=model_info,
         )
 
-        model_params.additional_properties = d
-        return model_params
+        deployment.additional_properties = d
+        return deployment
 
     @property
     def additional_keys(self) -> List[str]:

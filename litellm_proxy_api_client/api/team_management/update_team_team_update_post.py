@@ -7,14 +7,17 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.http_validation_error import HTTPValidationError
 from ...models.update_team_request import UpdateTeamRequest
-from ...types import Response
+from ...types import UNSET, Response, Unset
 
 
 def _get_kwargs(
     *,
     body: UpdateTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Dict[str, Any]:
     headers: Dict[str, Any] = {}
+    if not isinstance(litellm_changed_by, Unset):
+        headers["litellm-changed-by"] = litellm_changed_by
 
     _kwargs: Dict[str, Any] = {
         "method": "post",
@@ -61,6 +64,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Response[Union[Any, HTTPValidationError]]:
     r"""Update Team
 
@@ -79,6 +83,8 @@ def sync_detailed(
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -96,7 +102,21 @@ def sync_detailed(
     }'
     ```
 
+    Example - Update Team `max_budget` budget
+    ```
+    curl --location 'http://0.0.0.0:8000/team/update'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data-raw '{
+        \"team_id\": \"litellm-test-client-id-new\",
+        \"max_budget\": 10
+    }'
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (UpdateTeamRequest): UpdateTeamRequest, used by /team/update when you need to update
             a team
 
@@ -121,6 +141,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        litellm_changed_by=litellm_changed_by,
     )
 
     response = client.get_httpx_client().request(
@@ -134,6 +155,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: UpdateTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     r"""Update Team
 
@@ -152,6 +174,8 @@ def sync(
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -169,7 +193,21 @@ def sync(
     }'
     ```
 
+    Example - Update Team `max_budget` budget
+    ```
+    curl --location 'http://0.0.0.0:8000/team/update'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data-raw '{
+        \"team_id\": \"litellm-test-client-id-new\",
+        \"max_budget\": 10
+    }'
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (UpdateTeamRequest): UpdateTeamRequest, used by /team/update when you need to update
             a team
 
@@ -195,6 +233,7 @@ def sync(
     return sync_detailed(
         client=client,
         body=body,
+        litellm_changed_by=litellm_changed_by,
     ).parsed
 
 
@@ -202,6 +241,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: UpdateTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Response[Union[Any, HTTPValidationError]]:
     r"""Update Team
 
@@ -220,6 +260,8 @@ async def asyncio_detailed(
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -237,7 +279,21 @@ async def asyncio_detailed(
     }'
     ```
 
+    Example - Update Team `max_budget` budget
+    ```
+    curl --location 'http://0.0.0.0:8000/team/update'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data-raw '{
+        \"team_id\": \"litellm-test-client-id-new\",
+        \"max_budget\": 10
+    }'
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (UpdateTeamRequest): UpdateTeamRequest, used by /team/update when you need to update
             a team
 
@@ -262,6 +318,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         body=body,
+        litellm_changed_by=litellm_changed_by,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -273,6 +330,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: UpdateTeamRequest,
+    litellm_changed_by: Union[None, Unset, str] = UNSET,
 ) -> Optional[Union[Any, HTTPValidationError]]:
     r"""Update Team
 
@@ -291,6 +349,8 @@ async def asyncio(
     with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id
     will have at max this max_budget
+    - budget_duration: Optional[str] - The duration of the budget for the team. Doc
+    [here](https://docs.litellm.ai/docs/proxy/team_budgets)
     - models: Optional[list] - A list of models associated with the team - all keys for this team_id
     will have at most, these models. If empty, assumes all models are allowed.
     - blocked: bool - Flag indicating if the team is blocked or not - will stop all calls from keys with
@@ -308,7 +368,21 @@ async def asyncio(
     }'
     ```
 
+    Example - Update Team `max_budget` budget
+    ```
+    curl --location 'http://0.0.0.0:8000/team/update'
+    --header 'Authorization: Bearer sk-1234'
+    --header 'Content-Type: application/json'
+    --data-raw '{
+        \"team_id\": \"litellm-test-client-id-new\",
+        \"max_budget\": 10
+    }'
+    ```
+
     Args:
+        litellm_changed_by (Union[None, Unset, str]): The litellm-changed-by header enables
+            tracking of actions performed by authorized users on behalf of other users, providing an
+            audit trail for accountability
         body (UpdateTeamRequest): UpdateTeamRequest, used by /team/update when you need to update
             a team
 
@@ -335,5 +409,6 @@ async def asyncio(
         await asyncio_detailed(
             client=client,
             body=body,
+            litellm_changed_by=litellm_changed_by,
         )
     ).parsed
